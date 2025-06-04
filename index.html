@@ -63,7 +63,7 @@
       }
     }
     window.addEventListener('keydown', e => { if (e.code === 'Space' || e.code === 'ArrowUp') jump(); });
-    window.addEventListener('click', jump);
+    window.addEventListener('touchstart', jump);
 
     function reset() {
       obstacles = [];
