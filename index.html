@@ -122,12 +122,14 @@
         ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
         if (win) {
           ctx.font = '24px sans-serif';
-          ctx.fillText('Вы победили, но далее игры не будет,', cw/2, ch/2 - 20);
-          ctx.fillText('так как интернета тут пока нет...', cw/2, ch/2 + 10);
+          ctx.fillText('Вы победили!', cw/2, ch/2 - 30);
+          ctx.fillText('Но далее игры не будет, так как', cw/2, ch/2);
+          ctx.fillText('интернета тут пока нет...', cw/2, ch/2 + 30);
         } else {
           ctx.font = '20px sans-serif';
-          ctx.fillText('попробуйте еще раз плиз - обычно', cw/2, ch*0.4 - 20);
-          ctx.fillText('помогает практика в 90 часов в неделю', cw/2, ch*0.4 + 10);
+          ctx.fillText('Попробуйте еще раз плиз.', cw/2, ch*0.4 - 30);
+          ctx.fillText('Обычно помогает практика', cw/2, ch*0.4);
+          ctx.fillText('в 90 часов в неделю', cw/2, ch*0.4 + 30);
         }
         btn.style.display = 'block';
       }
