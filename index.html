@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chrome Penguin Runner</title>
   <style>
-    body { margin: 0; overflow: hidden; background: #fff; position: relative; }
+    body { margin: 0; overflow: hidden; background: #fff; position: relative; height: 100vh; }
     canvas { display: block; background: #fff; }
-    #restartBtn {
+    #restartBtn, #startBtn {
       position: absolute;
       top: 25%; left: 50%;
       transform: translate(-50%, -50%);
@@ -17,19 +18,23 @@
       padding: 12px 24px;
       font-size: 18px;
       cursor: pointer;
-      display: none;
       border-radius: 4px;
     }
+    #startBtn { display: block; }
+    #restartBtn { display: none; }
   </style>
 </head>
 <body>
   <canvas id="game"></canvas>
-  <button id="restartBtn">может не будем повторять?..</button>
+  <button id="startBtn">Старт</button>
+  <button id="restartBtn">Может не будем повторять?..</button>
   <script>
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
     const btn = document.getElementById('restartBtn');
+    const startBtn = document.getElementById('startBtn');
     let cw, ch;
+
     function resize() {
       cw = canvas.width = window.innerWidth;
       ch = canvas.height = window.innerHeight;
@@ -50,6 +55,7 @@
     let score = 0;
     let gameOver = false;
     let win = false;
+    let gameStarted = false;
     let animationId;
 
     function drawPenguin(p) {
@@ -62,8 +68,10 @@
         penguin.jumping = true;
       }
     }
+
+    // Для мобильных устройств в Telegram
+    window.addEventListener('click', jump);
     window.addEventListener('keydown', e => { if (e.code === 'Space' || e.code === 'ArrowUp') jump(); });
-    window.addEventListener('touchstart', jump);
 
     function reset() {
       obstacles = [];
@@ -135,8 +143,24 @@
       }
     }
 
+    function startGame() {
+      if (!gameStarted) {
+        gameStarted = true;
+        startBtn.style.display = 'none';
+        reset();
+      }
+    }
+
     btn.addEventListener('click', () => { if (gameOver) reset(); });
-    penguinImg.onload = () => reset();
+    startBtn.addEventListener('click', startGame);
+    penguinImg.onload = () => { if (gameStarted) reset(); };
+
+    // Отправка результата в Telegram при завершении игры
+    function sendScore(score) {
+        if (window.Telegram && Telegram.WebApp) {
+            Telegram.WebApp.sendData(JSON.stringify({score: score}));
+        }
+    }
   </script>
 </body>
 </html>
